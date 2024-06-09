@@ -8,7 +8,7 @@
 <body>
 {% if chats %}
 {% for chat in chats %}
-{% if chat.author == username%}
+{% if chat.author == username %}
 <div style="color: aqua;">
     {{ chat.content }}
 </div>
@@ -20,9 +20,10 @@
 {% endfor %}
 {% endif %}
 <center>
-    <form action="{% url 'chat' %}" method="post">
+    <form action="{% url 'chatroom' 'room' 'username' %}" method="post">
         {% csrf_token %}
-        <input type="text" placeholder="chat" required>
+        <input type="text" placeholder="chat" name="chat" required>
+        <input type="hidden" value="{{ room }}" name="room_name">
         <button type="submit">Send</button>
     </form>
 </center>
