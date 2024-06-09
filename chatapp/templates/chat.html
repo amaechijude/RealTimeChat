@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+{% if chats %}
+{% for chat in chats %}
+{% if chat.author == username%}
+<div style="color: aqua;">
+    {{ chat.content }}
+</div>
+{% else %}
+<div style="color: blue;">
+    {{ chat.content }}
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+<center>
+    <form action="{% url 'chat' %}" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="chat" required>
+        <button type="submit">Send</button>
+    </form>
+</center>
+</body>
+</html>
