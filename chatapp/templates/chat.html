@@ -27,5 +27,25 @@
         <button type="submit">Send</button>
     </form>
 </center>
+
+<script>
+    // Determine the WebSocket protocol based on the application's URL
+    const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
+
+    // Create a new WebSocket connection
+    const socket = new WebSocket(wsEndpoint);
+
+    // Successful connection event
+    socket.onopen = (event) => {
+        console.log("WebSocket connection opened!");
+    };
+
+    // Socket disconnect event
+    socket.onclose = (event) => {
+        console.log("WebSocket connection closed!");
+    };
+</script>
+
 </body>
 </html>
