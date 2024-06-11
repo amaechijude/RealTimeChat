@@ -15,20 +15,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json
+        content = text_data_json
 
-    async def send_message(self, event):
-        data = event['message']
-        await self.create_message(data=data)
+    async def send_content(self, event):
+        data = event['content']
+        await self.create_content(data=data)
         response_data = {
                 'author': data['author'],
-                'message': data['message']
+                'content': data['content']
                 }
-        await self.send(text_data=json.dumps({'message': response_data}))
+        await self.send(text_data=json.dumps({'content': response_data}))
 
     @database_sync_to_async
-    def create_message(self, data):
+    def create_content(self, data):
         get_room_by_name = Room.objects.get(room_name=data['room_name'])
-        if not Message.objects.filter(message=data['message']).exists():
-            new_message = Message(room=get_room_by_name, author=data['author'], message=data['message'])
-            new_message.save()
+        if not Message.objects.filter(content=data['content']).exists():
+            new_content = Message(room=get_room_by_name, author=data['author'], content=data['content'])
+            new_content.save()

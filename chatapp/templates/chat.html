@@ -20,9 +20,9 @@
 {% endfor %}
 {% endif %}
 <center>
-    <form action="{% url 'chatroom' 'room' 'username' %}" method="post">
+    <form id="content-form" action="" method="post">
         {% csrf_token %}
-        <input type="text" placeholder="chat" name="chat" required>
+        <input id="msg" type="text" placeholder="chat" name="chat" required>
         <button type="submit">Send</button>
     </form>
 </center>
@@ -46,37 +46,37 @@
     };
 
     // Form submit listener
-    document.getElementById('message-form').addEventListener('submit', function(event){
+    document.getElementById('content-form').addEventListener('submit', function(event){
         event.preventDefault();
-        const message = document.getElementById('msg').value;
+        const content = document.getElementById('msg').value;
         socket.send(
             JSON.stringify({
-                'message': message,
+                'content': content,
                 'room_name': '{{room_name}}',
-                'sender': '{{user}}',
+                'author': '{{user}}',
             })
         );
     });
 
     // Response from consumer on the server
-    socket.addEventListener("message", (event) => {
-        const messageData = JSON.parse(event.data)['message'];
-        console.log(messageData);
+    socket.addEventListener("content", (event) => {
+        const contentData = JSON.parse(event.data)['content'];
+        console.log(contentData);
 
-        var sender = messageData['sender'];
-        var message = messageData['message'];
+        var author = contentData['author'];
+        var content = contentData['content'];
 
-        // Empty the message input field after the message has been sent
-        if (sender == '{{user}}'){
+        // Empty the content input field after the content has been sent
+        if (author == '{{user}}'){
             document.getElementById('msg').value = '';
         }
 
-        // Append the message to the chatbox
-        var messageDiv = document.querySelector('.message');
-        if (sender != '{{user}}') { // Assuming you have a variable `currentUser` to hold the current user's name
-            messageDiv.innerHTML += '<div class="receive"><p style="color: #000;">' + message + '<strong>-' + sender + '</strong></p></div>';
+        // Append the content to the chatbox
+        var contentDiv = document.querySelector('.content');
+        if (author != '{{user}}') { // Assuming you have a variable `currentUser` to hold the current user's name
+            contentDiv.innerHTML += '<div class="receive"><p style="color: #000;">' + content + '<strong>-' + author + '</strong></p></div>';
         } else {
-            messageDiv.innerHTML += '<div class="send"><p style="color: #000;">' + message + '</p></div>';
+            contentDiv.innerHTML += '<div class="send"><p style="color: #000;">' + content + '</p></div>';
         }
         scrollToBottom();
     });

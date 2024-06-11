@@ -18,9 +18,17 @@ def rename_text(file_name, s_word, new_word):
         return "file name error"
 
 
-x = input("Enter file name: ")
+#x = input("Enter file name: ")
 y = input("Enter words to be renamed seperated by ',': ")
 z = input("Enter new words for the above accordignly: ")
 
-output = rename_text(x,y,z)
-print(output)
+#output = rename_text(x,y,z)
+
+cpath = Path.cwd()
+
+for i in cpath.iterdir():
+    if i.is_file():
+        name = str(i.stem) + str(i.suffix)
+        print(name)
+        rename_text(name, y, z)
+#print(output)
