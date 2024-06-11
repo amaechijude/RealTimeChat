@@ -23,7 +23,6 @@
     <form action="{% url 'chatroom' 'room' 'username' %}" method="post">
         {% csrf_token %}
         <input type="text" placeholder="chat" name="chat" required>
-        <input type="hidden" value="{{ room }}" name="room_name">
         <button type="submit">Send</button>
     </form>
 </center>

@@ -1,5 +1,5 @@
 import json
-from channels.generic.websocket import AsycWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import Room, Message
 
@@ -21,7 +21,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = event['message']
         await self.create_message(data=data)
         response_data = {
-                'sender': data['sender'],
+                'author': data['author'],
                 'message': data['message']
                 }
         await self.send(text_data=json.dumps({'message': response_data}))
@@ -30,5 +30,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def create_message(self, data):
         get_room_by_name = Room.objects.get(room_name=data['room_name'])
         if not Message.objects.filter(message=data['message']).exists():
-            new_message = Message(room=get_room_by_name, sender=data['sender'], message=data['message'])
+            new_message = Message(room=get_room_by_name, author=data['author'], message=data['message'])
             new_message.save()

@@ -1,4 +1,4 @@
-from .consumers import ChatConsumer
+from .consumer import ChatConsumer
 from django.urls import path
 
 
