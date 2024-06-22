@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'RealTimeChat.wsgi.application'
 
 ASGI_APPLICATION = 'RealTimeChat.asgi.application'
 
-# CHANNEL_LAYERS = {
-#         "default": {
-#             "BACKEND": "channels.layers.InMemoryChannelLayer"
-#             }
-#         }
+CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+            }
+        }
 
 
 # Database
