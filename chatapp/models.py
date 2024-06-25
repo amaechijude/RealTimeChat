@@ -19,9 +19,9 @@ class Area(models.Model):
                                  db_persist=True)
 
 class Room(models.Model):
-    roomID = models.AutoField(primary_key=True)
     created_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
-    room_name = models.CharField(max_length=50)
+    room_name = models.CharField(max_length=50, unique=True, primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.room_name
