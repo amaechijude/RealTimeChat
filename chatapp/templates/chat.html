@@ -1,91 +1,228 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
-</head>
-<body>
-{% if chats %}
-{% for chat in chats %}
-{% if chat.author == username %}
-<div style="color: aqua;">
-    {{ chat.content }}
-</div>
-{% else %}
-<div style="color: blue;">
-    {{ chat.content }}
-</div>
-{% endif %}
-{% endfor %}
-{% endif %}
-<center>
-    <form id="content-form" action="" method="post">
-        {% csrf_token %}
-        <input id="msg" type="text" placeholder="chat" name="chat" required>
-        <button type="submit">Send</button>
-    </form>
-</center>
+<!DOCTYPE html> 
 
-<script>
-    // Determine the WebSocket protocol based on the application's URL
-    const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
+<html lang="en"> 
 
-    // Create a new WebSocket connection
-    const socket = new WebSocket(wsEndpoint);
+  
 
-    // Successful connection event
-    socket.onopen = (event) => {
-        console.log("WebSocket connection opened!");
-    };
+<head> 
 
-    // Socket disconnect event
-    socket.onclose = (event) => {
-        console.log("WebSocket connection closed!");
-    };
+    <meta charset="UTF-8"> 
 
-    // Form submit listener
-    document.getElementById('content-form').addEventListener('submit', function(event){
-        event.preventDefault();
-        const content = document.getElementById('msg').value;
-        socket.send(
-            JSON.stringify({
-                'content': content,
-                'room_name': '{{room_name}}',
-                'author': '{{user}}',
-            })
-        );
-    });
+    <meta name="viewport" content= 
 
-    // Response from consumer on the server
-    socket.addEventListener("content", (event) => {
-        const contentData = JSON.parse(event.data)['content'];
-        console.log(contentData);
+        "width=device-width, initial-scale=1.0"> 
 
-        var author = contentData['author'];
-        var content = contentData['content'];
+    <style> 
 
-        // Empty the content input field after the content has been sent
-        if (author == '{{user}}'){
-            document.getElementById('msg').value = '';
-        }
+        .chat-container { 
 
-        // Append the content to the chatbox
-        var contentDiv = document.querySelector('.content');
-        if (author != '{{user}}') { // Assuming you have a variable `currentUser` to hold the current user's name
-            contentDiv.innerHTML += '<div class="receive"><p style="color: #000;">' + content + '<strong>-' + author + '</strong></p></div>';
-        } else {
-            contentDiv.innerHTML += '<div class="send"><p style="color: #000;">' + content + '</p></div>';
-        }
-        scrollToBottom();
-    });
-</script>
-<script>
-    function scrollToBottom() {
-        var chatContainer = document.getElementById("chatContainer");
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-</script>
-</body>
+            max-width: 600px; 
+
+            margin: 50px auto; 
+
+            background-color: #fff; 
+
+            border-radius: 8px; 
+
+            overflow: hidden; 
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+
+        } 
+
+  
+
+        .message-container { 
+
+            display: flex; 
+
+            flex-direction: column; 
+
+        } 
+
+  
+
+        .message { 
+
+            padding: 10px; 
+
+            margin: 10px; 
+
+            border-radius: 5px; 
+
+            max-width: 70%; 
+
+            word-wrap: break-word; 
+
+            display: flex; 
+
+            align-items: center; 
+
+        } 
+
+  
+
+        .sender-message { 
+
+            background-color: #e0e0e0; 
+
+            color: #000; 
+
+            align-self: flex-start; 
+
+        } 
+
+  
+
+        .receiver-message { 
+
+            background-color: #4CAF50; 
+
+            color: #fff; 
+
+            align-self: flex-end; 
+
+        } 
+
+  
+
+        .avatar { 
+
+            width: 30px; 
+
+            height: 30px; 
+
+            border-radius: 50%; 
+
+            margin-right: 10px; 
+
+        } 
+
+  
+
+        .message input { 
+
+            width: calc(100% - 20px); 
+
+            padding: 8px; 
+
+            margin: 10px; 
+
+            border: 1px solid #ddd; 
+
+            border-radius: 5px; 
+
+        } 
+
+  
+
+        .message button { 
+
+            padding: 8px; 
+
+            margin: 10px; 
+
+            background-color: #4CAF50; 
+
+            color: #fff; 
+
+            border: none; 
+
+            border-radius: 5px; 
+
+            cursor: pointer; 
+
+        } 
+
+    </style> 
+
+    <title>Chat Template UI using HTML and CSS</title> 
+
+</head> 
+
+  
+
+<body> 
+
+    <div class="chat-container"> 
+
+        <div class="message-container"> 
+
+            <div class="message sender-message"> 
+
+                <img src= 
+
+"https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" 
+
+                    alt="Sender Avatar"
+
+                    class="avatar"> 
+
+                Hello there! 
+
+            </div> 
+
+            <div class="message receiver-message"> 
+
+                <img src= 
+"https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg"
+
+                    alt="Receiver Avatar" 
+
+                    class="avatar"> 
+
+                Hi! How can I help you today? 
+
+            </div> 
+
+            <div class="message sender-message"> 
+
+                <img src= 
+
+"https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" 
+
+                    alt="Sender Avatar"
+
+                    class="avatar"> 
+
+                I have a question about your products. 
+
+            </div> 
+
+            <div class="message receiver-message"> 
+
+                <img src= 
+"https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg"
+
+                    alt="Receiver Avatar" 
+
+                    class="avatar"> 
+
+                Sure, feel free to ask! 
+
+            </div> 
+
+        </div> 
+
+  
+
+        <div class="message"> 
+
+            <input type="text" 
+
+                placeholder="Type your message..."> 
+
+            <button>Send</button> 
+
+        </div> 
+
+    </div> 
+    <center>
+        <a href="/">Home</a> 
+    </center>
+
+</body> 
+
+  
+
 </html>

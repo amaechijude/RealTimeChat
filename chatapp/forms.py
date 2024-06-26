@@ -15,13 +15,13 @@ class RegisterForm(UserCreationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ("user")
+        exclude = ['user']
 
 
 class AreaForm(forms.ModelForm):
     class Meta:
         model = Area
-        exclude = ('output')
+        exclude = ['output']
 
 class RoomForm(forms.Form):
     room_name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"placeholder":"create or join room"}))

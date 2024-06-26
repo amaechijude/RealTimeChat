@@ -1,0 +1,124 @@
+<!DOCTYPE html> 
+
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <style> 
+        .chat-container { 
+            max-width: 600px; 
+            margin: 50px auto; 
+            background-color: #fff; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        } 
+        .message-container { 
+            display: flex; 
+            flex-direction: column; 
+        } 
+        .message { 
+            padding: 10px; 
+            margin: 10px; 
+            border-radius: 5px; 
+            max-width: 70%; 
+            word-wrap: break-word; 
+            display: flex; 
+            align-items: center; 
+            flex-direction: column;
+        } 
+        .sender-message { 
+            background-color: #e0e0e0; 
+            color: #000; 
+            align-self: flex-start; 
+        } 
+        .receiver-message { 
+            background-color: #4CAF50; 
+            color: #fff; 
+            align-self: flex-end; 
+        } 
+        .avatar { 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            margin-right: 10px; 
+        } 
+        .message-header { 
+            display: flex; 
+            align-items: center; 
+            width: 100%;
+        }
+        .message-content {
+            width: 100%;
+        }
+        .username { 
+            font-weight: bold; 
+            margin-right: 5px; 
+        } 
+        .timestamp { 
+            font-size: 0.85em; 
+            color: gray; 
+            margin-left: auto; 
+        } 
+        .message input { 
+            width: calc(100% - 20px); 
+            padding: 8px; 
+            margin: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        } 
+        .message button { 
+            padding: 8px; 
+            margin: 10px; 
+            background-color: #4CAF50; 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        } 
+    </style> 
+    <title>Chat Template UI using HTML and CSS</title> 
+</head> 
+<body> 
+    <div class="chat-container"> 
+        <div class="message-container"> 
+            <div class="message sender-message"> 
+                <div class="message-header">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" alt="Sender Avatar" class="avatar"> 
+                    <span class="username">User1</span>
+                    <span class="timestamp">10:30 AM</span>
+                </div>
+                <div class="message-content">Hello there!</div>
+            </div> 
+            <div class="message receiver-message"> 
+                <div class="message-header">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg" alt="Receiver Avatar" class="avatar"> 
+                    <span class="username">User2</span>
+                    <span class="timestamp">10:31 AM</span>
+                </div>
+                <div class="message-content">Hi! How can I help you today?</div>
+            </div> 
+            <div class="message sender-message"> 
+                <div class="message-header">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" alt="Sender Avatar" class="avatar"> 
+                    <span class="username">User1</span>
+                    <span class="timestamp">10:32 AM</span>
+                </div>
+                <div class="message-content">I have a question about your products.</div>
+            </div> 
+            <div class="message receiver-message"> 
+                <div class="message-header">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg" alt="Receiver Avatar" class="avatar"> 
+                    <span class="username">User2</span>
+                    <span class="timestamp">10:33 AM</span>
+                </div>
+                <div class="message-content">Sure, feel free to ask!</div>
+            </div> 
+        </div> 
+        <div class="message"> 
+            <input type="text" placeholder="Type your message..."> 
+            <button>Send</button> 
+        </div> 
+    </div> 
+</body> 
+</html>

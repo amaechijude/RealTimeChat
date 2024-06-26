@@ -32,7 +32,8 @@ class Message(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     content = models.TextField()
-    image = ResizedImageField(quality=70, upload_to="media/chats", null=True)
+    image = ResizedImageField(quality=70, upload_to="media/chats/images", null=True)
+    file = models.FileField(blank=True, null=True, upload_to='media/chats/files')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

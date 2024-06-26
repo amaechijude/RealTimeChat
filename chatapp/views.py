@@ -19,3 +19,7 @@ def home(request):
     }
 
     return render(request, 'home.html', context)
+
+
+def chat(request):
+    return render(request, 'chat.html')
