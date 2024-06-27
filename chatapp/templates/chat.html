@@ -1,230 +1,189 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 
-<html lang="en"> 
+<html lang="en">
 
-  
 
-<head> 
 
-    <meta charset="UTF-8"> 
+<head>
 
-    <meta name="viewport" content= 
+    <meta charset="UTF-8">
 
-        "width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style> 
+    <style>
+        .chat-container {
 
-        .chat-container { 
+            max-width: 600px;
 
-            max-width: 600px; 
+            margin: 50px auto;
 
-            margin: 50px auto; 
+            background-color: #fff;
 
-            background-color: #fff; 
+            border-radius: 8px;
 
-            border-radius: 8px; 
+            overflow: hidden;
 
-            overflow: hidden; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
 
-        } 
 
-  
 
-        .message-container { 
+        .message-container {
 
-            display: flex; 
+            display: flex;
 
-            flex-direction: column; 
+            flex-direction: column;
 
-        } 
+        }
 
-  
 
-        .message { 
 
-            padding: 10px; 
+        .message {
 
-            margin: 10px; 
+            padding: 10px;
 
-            border-radius: 5px; 
+            margin: 10px;
 
-            max-width: 70%; 
+            border-radius: 5px;
 
-            word-wrap: break-word; 
+            max-width: 70%;
 
-            display: flex; 
+            word-wrap: break-word;
 
-            align-items: center; 
+            display: flex;
 
-        } 
+            align-items: center;
 
-  
+        }
 
-        .sender-message { 
 
-            background-color: #e0e0e0; 
 
-            color: #000; 
+        .sender-message {
 
-            align-self: flex-start; 
+            background-color: #e0e0e0;
 
-        } 
+            color: #000;
 
-  
+            align-self: flex-start;
 
-        .receiver-message { 
+        }
 
-            background-color: #4CAF50; 
 
-            color: #fff; 
 
-            align-self: flex-end; 
+        .receiver-message {
 
-        } 
+            background-color: #4CAF50;
 
-  
+            color: #fff;
 
-        .avatar { 
+            align-self: flex-end;
 
-            width: 30px; 
+        }
 
-            height: 30px; 
 
-            border-radius: 50%; 
 
-            margin-right: 10px; 
+        .avatar {
 
-        } 
+            width: 30px;
 
-  
+            height: 30px;
 
-        .message input { 
+            border-radius: 50%;
 
-            width: calc(100% - 20px); 
+            margin-right: 10px;
 
-            padding: 8px; 
+        }
 
-            margin: 10px; 
 
-            border: 1px solid #ddd; 
 
-            border-radius: 5px; 
+        .message input {
 
-        } 
+            width: calc(100% - 20px);
 
-  
+            padding: 8px;
 
-        .message button { 
+            margin: 10px;
 
-            padding: 8px; 
+            border: 1px solid #ddd;
 
-            margin: 10px; 
+            border-radius: 5px;
 
-            background-color: #4CAF50; 
+        }
 
-            color: #fff; 
 
-            border: none; 
 
-            border-radius: 5px; 
+        .message button {
 
-            cursor: pointer; 
+            padding: 8px;
 
-        } 
+            margin: 10px;
 
-    </style> 
+            background-color: #4CAF50;
 
-    <title>Chat Template UI using HTML and CSS</title> 
+            color: #fff;
 
-</head> 
+            border: none;
 
-  
+            border-radius: 5px;
 
-<body> 
+            cursor: pointer;
 
-    <div class="chat-container"> 
+        }
+    </style>
 
-        <div class="message-container"> 
+    <title>Chat Template UI using HTML and CSS</title>
 
-            <div class="message sender-message"> 
+</head>
 
-                <img src= 
 
-"https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" 
 
-                    alt="Sender Avatar"
+<body>
+    <div class="chat-container">
+        {% for chat in chats %}
 
-                    class="avatar"> 
+        <div class="message-container">
+            {% if chat.author.user == request.user %}
+            <div class="message sender-message">
 
-                Hello there! 
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" alt="Sender Avatar"
+                    class="avatar">
 
-            </div> 
+                {{ chat.content }}
 
-            <div class="message receiver-message"> 
+            </div>
+            {% else %}
+            <div class="message receiver-message">
 
-                <img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg"
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg"
+                    alt="Receiver Avatar" class="avatar">
 
-                    alt="Receiver Avatar" 
+                    {{ chat.content }}
 
-                    class="avatar"> 
+            </div>
+            {% endif %}
 
-                Hi! How can I help you today? 
+        </div>
+        {% endfor %}
 
-            </div> 
 
-            <div class="message sender-message"> 
+        <div class="message">
 
-                <img src= 
+            <input type="text" placeholder="Type your message...">
 
-"https://media.geeksforgeeks.org/wp-content/uploads/20220123013311/gfg.png" 
+            <button>Send</button>
 
-                    alt="Sender Avatar"
+        </div>
 
-                    class="avatar"> 
-
-                I have a question about your products. 
-
-            </div> 
-
-            <div class="message receiver-message"> 
-
-                <img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20210511160813/g4g.jpg"
-
-                    alt="Receiver Avatar" 
-
-                    class="avatar"> 
-
-                Sure, feel free to ask! 
-
-            </div> 
-
-        </div> 
-
-  
-
-        <div class="message"> 
-
-            <input type="text" 
-
-                placeholder="Type your message..."> 
-
-            <button>Send</button> 
-
-        </div> 
-
-    </div> 
+    </div>
     <center>
         <a href="/">Home</a>
-	</br>
+        </br>
         <a href="/what">What</a>
     </center>
 
-</body> 
+</body>
 
-  
+
 
 </html>

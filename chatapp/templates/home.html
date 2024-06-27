@@ -94,7 +94,10 @@
 	</form>
 	</br>
 	{% for obj in filter.qs %}
-	 <a href="{}"></a> {{ obj.room_name }} --- &nbsp; --- {{ obj.created_at }}
+    <table>
+    
+    </table>
+	 <a href="{% url 'chat' obj.room_name %}">{{ obj.room_name }}</a> {{ obj.created_at }}
 	{% endfor %}
 
         </center>
