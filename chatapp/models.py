@@ -7,9 +7,9 @@ User = get_user_model()
 class Profile(models.Model):
     pID = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    avatar = ResizedImageField(quality=70, upload_to='media/profile')
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    avatar = ResizedImageField(quality=70, upload_to='media/profile', blank=True, null=True)
 
 class Area(models.Model):
     breadth = models.PositiveIntegerField()

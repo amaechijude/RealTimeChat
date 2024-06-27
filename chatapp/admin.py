@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Message)
 admin.site.register(Room)
 admin.site.register(Area)
+admin.site.register(Profile)

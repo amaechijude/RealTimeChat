@@ -86,6 +86,17 @@
 
 
 	<a href="/chat">Chat</a>
+	</br>
+	</br>
+	<form method="get">
+		{{ filter.form.as_p }}
+		<button type=submit">Search</button>
+	</form>
+	</br>
+	{% for obj in filter.qs %}
+	{{ obj.room_name }} --- &nbsp; --- {{ obj.created_at }}
+	{% endfor %}
+
         </center>
     <div class="chat-container"> 
         <div class="message-container"> 
