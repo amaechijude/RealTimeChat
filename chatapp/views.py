@@ -20,7 +20,7 @@ def signup(request):
             messages.info(request, "Registration successful, Now login")
             return redirect('signin')
     form = RegisterForm()
-    return render(request, 'signup.html')
+    return render(request, 'signup.html', {"form": form})
 
 def signin(request):
     if request.method == 'POST':
@@ -34,6 +34,7 @@ def signin(request):
         
     return render(request, 'login.html')
 
+@login_required(login_url='login')
 def home(request):
     if request.method == 'POST':
         room_name = str(request.POST['room']).lower()
@@ -57,9 +58,15 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+@login_required(login_url='login')
 def chat(request, pk):
-    roo
-    return render(request, 'chat.html')
+    room = Room.objects.get(room_name=pk)
+    chats = Message.objects.filter(room=room)
+
+    context = {
+        "chats": chats,
+    }
+    return render(request, 'chat.html', context)
 
 
 def what(request):
