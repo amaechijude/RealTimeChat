@@ -64,6 +64,7 @@ def chat(request, pk):
     chats = Message.objects.filter(room=room)
 
     context = {
+        "room": pk,
         "chats": chats,
     }
     return render(request, 'chat.html', context)
