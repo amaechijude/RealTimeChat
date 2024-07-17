@@ -110,8 +110,10 @@
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
                             <div class="img_cont">
-                                <img src="{{ room.avatar.url }}"
-				class="rounded-circle user_img">
+                                {% if room.avatar %}
+                                <img src="{{ room.avatar.url }}" class="rounded-circle user_img">
+                                {% endif %}
+
                                 <span class="online_icon"></span>
                             </div>
                             <div class="user_info">

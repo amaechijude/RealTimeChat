@@ -26,7 +26,7 @@ class Profile(models.Model):
 class Room(models.Model):
     room_name = models.CharField(max_length=150, unique=True, primary_key=True)
     avatar = ResizedImageField(quality=70, upload_to='media/room', blank=True, null=True)
-    members = models.ManyToManyField(Profile)
+    members = models.ManyToManyField(Profile, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

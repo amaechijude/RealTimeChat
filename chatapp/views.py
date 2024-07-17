@@ -74,5 +74,39 @@ def chat(request, pk):
 def what(request):
     return render(request, 'form.html')
 
-def index(request):
-    return redirect('home')
+
+
+@login_required(login_url='signin')
+def create_room(request):
+    if request.method == 'POST':
+        room_name = request.POST.get('room_name').title()
+        new_room = Room.objects.create(room_name=room_name)
+        new_room.save()
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        new_room.members.add(profile)
+        new_room.save()
+        pk = room_name
+
+        return redirect('chat', pk)
+
+
+@login_required(login_url='signin')
+def joinroom(request):
+    if request.method == 'POST':
+        room_name = request.POST.get('room_name')
+        room = Room.objects.get(room_name=room_name)
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        pk = room_name
+
+        if room.members.filter(pID=profile.pID).exists():
+            return redirect('chat', pk)
+        else:
+            room.members.add(profile)
+            room.save()
+            return redirect('chat', pk)
+
+
+
+

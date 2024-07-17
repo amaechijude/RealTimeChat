@@ -105,6 +105,11 @@
     </nav>
     <center>
         </br>
+        <form action="{% url 'create_room' %}" method="post">
+            {% csrf_token %}
+            <input name="room_name" type="text" required minlength="3">
+            <button type="submit">Create Room</button>
+        </form>
         </br>
         <form method="get">
             {{ filter.form.as_p }}
@@ -121,12 +126,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for obj in filter.qs %}
+                {% for obj in filter.qs reversed %}
 
                 <tr>
                     <td>{{ obj.room_name }}</td>
                     <td>{{ obj.created_at }}</td>
-                    <td><a href="{% url 'chat' obj.room_name %}">Join</a></td>
+                    <td>
+                        <form action="{% url 'joinroom' %}" method="post">
+                            {% csrf_token %}
+                            <input name="room_name" value="{{ obj.room_name }}" type="hidden">
+                            {% if request.user.profile in obj.members.all %}
+                            <input type="submit" value="Leave">
+                            {% else %}
+                            <input type="submit" value="Join" >
+                            {% endif %}
+                        </form>
+                    </td>
                 </tr>
 
                 {% endfor %}
