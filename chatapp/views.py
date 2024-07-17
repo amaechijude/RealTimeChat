@@ -22,6 +22,7 @@ def signup(request):
     form = RegisterForm()
     return render(request, 'signup.html', {"form": form})
 
+
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -34,7 +35,7 @@ def signin(request):
         
     return render(request, 'login.html')
 
-@login_required(login_url='login')
+@login_required(login_url='signin')
 def home(request):
     if request.method == 'POST':
         room_name = str(request.POST['room']).lower()
@@ -47,18 +48,16 @@ def home(request):
             
 
     form = RoomForm()
-    forma = AreaForm()
     room_filter = RoomFilter(request.GET, queryset=Room.objects.all())
     context = {
         "form": form,
-        "forma": forma,
         'filter': room_filter,
     }
 
     return render(request, 'home.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='signin')
 def chat(request, pk):
     room = Room.objects.get(room_name=pk)
     chats = Message.objects.filter(room=room)
