@@ -61,10 +61,12 @@ def home(request):
 def chat(request, pk):
     room = Room.objects.get(room_name=pk)
     chats = Message.objects.filter(room=room)
+    members = room.members.all()
 
     context = {
-        "room": pk,
+        "room": room,
         "chats": chats,
+        "members": members,
     }
     return render(request, 'chat.html', context)
 

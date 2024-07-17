@@ -12,6 +12,10 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30, blank=True)
     avatar = ResizedImageField(quality=70, upload_to='media/profile', blank=True, null=True)
 
+    def __str__(self):
+        res = f"{self.first_name}"
+        return res
+
 # class Area(models.Model):
 #     breadth = models.PositiveIntegerField()
 #     width = models.PositiveIntegerField()
@@ -21,6 +25,7 @@ class Profile(models.Model):
 
 class Room(models.Model):
     room_name = models.CharField(max_length=150, unique=True, primary_key=True)
+    avatar = ResizedImageField(quality=70, upload_to='media/room', blank=True, null=True)
     members = models.ManyToManyField(Profile)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -30,6 +35,7 @@ class Room(models.Model):
     
 
 class Message(models.Model):
+    mID = ShortUUIDField(primary_key=True, unique=True, editable=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     content = models.CharField(max_length=300, blank=True)
