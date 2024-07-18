@@ -36,6 +36,11 @@ def signin(request):
     return render(request, 'login.html')
 
 @login_required(login_url='signin')
+def signout(request):
+    logout(request)
+    return redirect('signin')
+
+@login_required(login_url='signin')
 def home(request):
     if request.method == 'POST':
         room_name = str(request.POST['room']).lower()
@@ -60,15 +65,25 @@ def home(request):
 @login_required(login_url='signin')
 def chat(request, pk):
     room = Room.objects.get(room_name=pk)
-    chats = Message.objects.filter(room=room)
     members = room.members.all()
 
-    context = {
-        "room": room,
-        "chats": chats,
-        "members": members,
-    }
-    return render(request, 'chat.html', context)
+    if request.user.profile in members:
+        if request.method == 'POST':
+            content = request.POST['content']
+            author = request.user.profile
+            new_chat = RoomChat.objects.create(author=author, content=content, room=room)
+            new_chat.save()
+            return redirect('chat', pk)
+        chats = RoomChat.objects.filter(room=room)
+        context = {
+            "room": room,
+            "chats": chats,
+            "members": members,
+        }
+        return render(request, 'chat.html', context)
+    else:
+        #meesage to join room
+        return redirect('home')
 
 
 def what(request):
@@ -101,6 +116,8 @@ def joinroom(request):
         pk = room_name
 
         if room.members.filter(pID=profile.pID).exists():
+            room.members.remove(profile)
+            room.save()
             return redirect('chat', pk)
         else:
             room.members.add(profile)

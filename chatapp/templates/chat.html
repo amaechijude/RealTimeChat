@@ -44,24 +44,23 @@
                                     </div>
                                 </div>
 			    </li>-->
-			    {% if members %}
-			    {% for m in members %}
+                            {% if members %}
+                            {% for m in members %}
                             <li>
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
-					    <img src="{{ m.avatar.url }}"
-                                            class="rounded-circle user_img">
+                                        <img src="{{ m.avatar.url }}" class="rounded-circle user_img">
                                         <span class="online_icon offline"></span>
                                     </div>
                                     <div class="user_info">
-					    <span>{{ m.first_name }} {{ m.last_name }}</span>
+                                        <span>{{ m.first_name }} {{ m.last_name }}</span>
                                         <p>{{ m.user.username }}</p>
                                     </div>
                                 </div>
                             </li>
-			    {% endfor %}
-			    {% endif %}
-                           <!-- <li>
+                            {% endfor %}
+                            {% endif %}
+                            <!-- <li>
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
                                         <img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg"
@@ -137,17 +136,18 @@
                     </div>
 
                     <!-- chat logic -->
-                     {% for chat in chats %}
                     <div class="card-body msg_card_body">
+                        {% for chat in chats %}
                         {% if chat.author.user == request.user %}
                         <div class="d-flex justify-content-start mb-4">
-                            <div class="img_cont_msg">
-                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
-                                    class="rounded-circle user_img_msg">
-                            </div>
                             <div class="msg_cotainer">
-                                <p>{{ chat.content }} </p><br>
+                                {{ chat.content }} <br>
                                 <span class="msg_time">{{ chat.created_at }}</span>
+                            </div>
+                            <div class="img_cont_msg">
+                                {% if chat.author.avatar %}
+                                <img src="{{ chat.author.avatar.url }}" class="rounded-circle user_img_msg">
+                                {% endif %}
                             </div>
                         </div>
                         {% else %}
@@ -157,24 +157,30 @@
                                 <span class="msg_time_send">{{ chat.created_at }}</span>
                             </div>
                             <div class="img_cont_msg">
-                                <img src="" class="rounded-circle user_img_msg">
+                                {% if chat.author.avatar %}
+                                <img src="{{ chat.author.avatar.url }}" class="rounded-circle user_img_msg">
+                                {% endif %}
                             </div>
                         </div>
                         {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                    
                     <!-- end chat logic -->
                     <div class="card-footer">
-                        <div class="input-group">
-                            <div class="input-group-append">
-                                <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                        <form action="{% url 'chat' room.room_name %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="input-group-append">
+                                    <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                </div>
+                                <textarea name="content" class="form-control type_msg"
+                                    placeholder="Type your message..."></textarea>
+                                <div class="input-group-append">
+                                    <span class="input-group-text send_btn"><button type="submit"><i class="fas fa-location-arrow"></i></button></span>
+                                </div>
                             </div>
-                            <textarea name="" class="form-control type_msg"
-                                placeholder="Type your message..."></textarea>
-                            <div class="input-group-append">
-                                <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

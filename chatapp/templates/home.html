@@ -101,9 +101,13 @@
             <li>
                 <a href="/what">What</a>
             </li>
+            <li>
+                <a href="{% url 'signout' %}">Logout</a>
+            </li>
         </ul>
     </nav>
     <center>
+        {{ request.user.username }}
         </br>
         <form action="{% url 'create_room' %}" method="post">
             {% csrf_token %}

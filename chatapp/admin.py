@@ -5,5 +5,5 @@ from .models import *
 
 admin.site.register(Profile)
 
-admin.site.register(Message)
+admin.site.register(RoomChat)
 admin.site.register(Room)

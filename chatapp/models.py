@@ -34,7 +34,7 @@ class Room(models.Model):
     
     
 
-class Message(models.Model):
+class RoomChat(models.Model):
     mID = ShortUUIDField(primary_key=True, unique=True, editable=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
