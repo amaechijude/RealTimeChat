@@ -71,7 +71,8 @@ def chat(request, pk):
         if request.method == 'POST':
             content = request.POST['content']
             author = request.user.profile
-            new_chat = RoomChat.objects.create(author=author, content=content, room=room)
+            file = request.FILES.get('file') or None
+            new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file)
             new_chat.save()
             return redirect('chat', pk)
         chats = RoomChat.objects.filter(room=room)

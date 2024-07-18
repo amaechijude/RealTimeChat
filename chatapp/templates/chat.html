@@ -143,6 +143,9 @@
                             <div class="msg_cotainer">
                                 {{ chat.content }} <br>
                                 <span class="msg_time">{{ chat.created_at }}</span>
+                                {% if chat.file %}
+                                <a href="{{ chat.file.url }}" target="_blank">{{ chat.file }}</a>
+                                {% endif %}
                             </div>
                             <div class="img_cont_msg">
                                 {% if chat.author.avatar %}
@@ -153,8 +156,11 @@
                         {% else %}
                         <div class="d-flex justify-content-end mb-4">
                             <div class="msg_cotainer_send">
-                                {{ chat.content }} <br>
+                                <div>{{ chat.content }} </div><br>
                                 <span class="msg_time_send">{{ chat.created_at }}</span>
+                                {% if chat.file %}
+                                <embed src="{{ chat.file.url }}" width="400" height="400" type="file">
+                                {% endif %}
                             </div>
                             <div class="img_cont_msg">
                                 {% if chat.author.avatar %}
@@ -172,10 +178,15 @@
                             {% csrf_token %}
                             <div class="input-group">
                                 <div class="input-group-append">
-                                    <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                    <input name="file" type="file" id="filebtn" hidden>
+                                    <span class="input-group-text attach_btn">
+                                        <label for="filebtn">
+                                            <i class="fas fa-paperclip"></i>
+                                        </label>
+                                    </span>
                                 </div>
                                 <textarea name="content" class="form-control type_msg"
-                                    placeholder="Type your message..."></textarea>
+                                    placeholder="Type your message..." required></textarea>
                                 <div class="input-group-append">
                                     <span class="input-group-text send_btn"><button type="submit"><i class="fas fa-location-arrow"></i></button></span>
                                 </div>
