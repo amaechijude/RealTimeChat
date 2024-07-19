@@ -1,8 +1,8 @@
 from .consumer import ChatConsumer
-from django.urls import path
+from django.urls import re_path
 
 
 websocket_urlpatterns = [
-        path('ws/notification/<str:room_name>/', ChatConsumer.as_asgi()),
+        re_path('ws/notification/<str:room_name>/', ChatConsumer.as_asgi()),
 
         ]

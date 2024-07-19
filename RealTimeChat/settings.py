@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     #daphne and channels asgi
-    # 'daphne',
-    # 'channels',
+    'daphne',
+    'channels',
 
     #django built in
     'django.contrib.admin',
@@ -78,7 +78,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'RealTimeChat.wsgi.application'
 
 ASGI_APPLICATION = 'RealTimeChat.asgi.application'
 
@@ -88,6 +87,8 @@ CHANNEL_LAYERS = {
             }
         }
 
+
+WSGI_APPLICATION = 'RealTimeChat.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
