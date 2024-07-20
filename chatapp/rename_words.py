@@ -29,6 +29,6 @@ cpath = Path.cwd()
 for i in cpath.iterdir():
     if i.is_file():
         name = str(i.stem) + str(i.suffix)
-        print(name)
         rename_text(name, y, z)
+        print(f"file: {name}, word: {y},  new_word: {z}")
 #print(output)

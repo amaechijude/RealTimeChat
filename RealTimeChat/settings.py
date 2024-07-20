@@ -79,6 +79,8 @@ TEMPLATES = [
 ]
 
 
+
+WSGI_APPLICATION = 'RealTimeChat.wsgi.application'
 ASGI_APPLICATION = 'RealTimeChat.asgi.application'
 
 CHANNEL_LAYERS = {
@@ -86,9 +88,6 @@ CHANNEL_LAYERS = {
             "BACKEND": "channels.layers.InMemoryChannelLayer"
             }
         }
-
-
-WSGI_APPLICATION = 'RealTimeChat.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
