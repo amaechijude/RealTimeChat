@@ -45,6 +45,7 @@ INSTALLED_APPS = [
    
     # third party
     'django_filters',
+     "django_htmx",
 
     #custom app
     'chatapp',
@@ -58,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #htmx middleware
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = 'RealTimeChat.urls'

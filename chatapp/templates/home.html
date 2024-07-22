@@ -28,7 +28,7 @@
             {% for obj in filter.qs reversed %}
 
             <tr>
-                <td>{{ obj.room_name }}</td>
+                <td> <a href="{% url 'chat' obj.room_name %}"> {{ obj.room_name }} </a></td>
                 <td>{{ obj.created_at }}</td>
                 <td>
                     <form action="{% url 'joinroom' %}" method="post">

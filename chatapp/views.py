@@ -68,19 +68,24 @@ def chat(request, pk):
     members = room.members.all()
 
     if request.user.profile in members:
-        if request.method == 'POST':
-            content = request.POST['content']
-            author = request.user.profile
-            file = request.FILES.get('file') or None
-            new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file)
-            new_chat.save()
-            return redirect('chat', pk)
         chats = RoomChat.objects.filter(room=room)
         context = {
             "room": room,
             "chats": chats,
             "members": members,
-        }
+            "user": request.user,        }
+        if request.htmx:
+        # if request.method == 'POST':
+            content = request.POST['content']
+            author = request.user.profile
+            file = request.FILES.get('file') or None
+            image = request.FILES.get('image') or None
+            new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file, image=image)
+            new_chat.save()
+
+            return render(request, 'partial.html', context)
+            # return redirect('chat', pk)
+        
         return render(request, 'chat.html', context)
     else:
         #meesage to join room
