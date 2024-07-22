@@ -1,166 +1,51 @@
-<!DOCTYPE html>
+{% include 'base.html' %}
+{% load static %}
+{% block content %}
+<center>
+    {{ request.user.username }}
+    </br>
+    <form action="{% url 'create_room' %}" method="post">
+        {% csrf_token %}
+        <input name="room_name" type="text" required minlength="3">
+        <button type="submit">Create Room</button>
+    </form>
+    </br>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type=submit">Search</button>
+    </form>
+    </br>
+    <table class="table">
+        <thead>
+            <tr>
+                <!-- <th scope="col">#</th> -->
+                <th scope="col">Room Name</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Join</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in filter.qs reversed %}
 
-<html lang="en">
+            <tr>
+                <td>{{ obj.room_name }}</td>
+                <td>{{ obj.created_at }}</td>
+                <td>
+                    <form action="{% url 'joinroom' %}" method="post">
+                        {% csrf_token %}
+                        <input name="room_name" value="{{ obj.room_name }}" type="hidden">
+                        {% if request.user.profile in obj.members.all %}
+                        <input type="submit" value="Leave">
+                        {% else %}
+                        <input type="submit" value="Join">
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <style>
-        .chat-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .message-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            max-width: 70%;
-            word-wrap: break-word;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .sender-message {
-            background-color: #e0e0e0;
-            color: #000;
-            align-self: flex-start;
-        }
-
-        .receiver-message {
-            background-color: #4CAF50;
-            color: #fff;
-            align-self: flex-end;
-        }
-
-        .avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .message-header {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .message-content {
-            width: 100%;
-        }
-
-        .username {
-            font-weight: bold;
-            margin-right: 5px;
-        }
-
-        .timestamp {
-            font-size: 0.85em;
-            color: gray;
-            margin-left: auto;
-        }
-
-        .message input {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .message button {
-            padding: 8px;
-            margin: 10px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-    <title>Chat Template UI using HTML and CSS</title>
-</head>
-
-<body>
-    <nav>
-        <ul>
-            <li>
-                <a href="/what">What</a>
-            </li>
-            <li>
-                <a href="{% url 'signout' %}">Logout</a>
-            </li>
-        </ul>
-    </nav>
-    <center>
-        {{ request.user.username }}
-        </br>
-        <form action="{% url 'create_room' %}" method="post">
-            {% csrf_token %}
-            <input name="room_name" type="text" required minlength="3">
-            <button type="submit">Create Room</button>
-        </form>
-        </br>
-        <form method="get">
-            {{ filter.form.as_p }}
-            <button type=submit">Search</button>
-        </form>
-        </br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <!-- <th scope="col">#</th> -->
-                    <th scope="col">Room Name</th>
-                    <th scope="col">Date Created</th>
-                    <th scope="col">Join</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for obj in filter.qs reversed %}
-
-                <tr>
-                    <td>{{ obj.room_name }}</td>
-                    <td>{{ obj.created_at }}</td>
-                    <td>
-                        <form action="{% url 'joinroom' %}" method="post">
-                            {% csrf_token %}
-                            <input name="room_name" value="{{ obj.room_name }}" type="hidden">
-                            {% if request.user.profile in obj.members.all %}
-                            <input type="submit" value="Leave">
-                            {% else %}
-                            <input type="submit" value="Join" >
-                            {% endif %}
-                        </form>
-                    </td>
-                </tr>
-
-                {% endfor %}
-            </tbody>
-        </table>
-
-    </center>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous"></script>
-
-</body>
-
-</html>
+</center>
+{% endblock %}
