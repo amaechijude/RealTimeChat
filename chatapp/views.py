@@ -67,12 +67,7 @@ def chat(request, pk):
     room = Room.objects.get(room_name=pk)
     members = room.members.all()
     chats = RoomChat.objects.filter(room=room)
-    context = {
-        "room": room,
-        "chats": chats,
-        "members": members,
-        "user": request.user,
-        }
+    
     if request.user.profile in members:
         # if request.htmx:
         if request.method == 'POST':
@@ -85,6 +80,13 @@ def chat(request, pk):
 
             # return render(request, 'partial.html', context)
             return redirect('chat', pk)
+        
+        context = {
+        "room": room,
+        "chats": chats,
+        "members": members,
+        "user": request.user,
+        }
         
         return render(request, 'chat.html', context)
     else:
