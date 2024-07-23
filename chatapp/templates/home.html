@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <center>
-    {{ request.user.username }}
+    {{ request.user.profile.pID }}
     </br>
     <form action="{% url 'create_room' %}" method="post">
         {% csrf_token %}

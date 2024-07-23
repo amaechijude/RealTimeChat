@@ -38,7 +38,7 @@ class RoomChat(models.Model):
     mID = ShortUUIDField(primary_key=True, unique=True, editable=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
-    content = models.CharField(max_length=300, blank=True)
+    content = models.CharField(max_length=300, blank=False)
     image = ResizedImageField(blank=True, null=True, quality=70, upload_to="media/chats/images")
     file = models.FileField(blank=True, null=True, upload_to='media/chats/files')
     created_at = models.DateTimeField(auto_now_add=True)
