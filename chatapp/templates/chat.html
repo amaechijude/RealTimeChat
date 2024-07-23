@@ -1,78 +1,70 @@
+{% extends 'base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block title %} {{ room.room_name }} Chat {% endblock%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatApp</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-
-<body>
-    <div class="app-container">
-        <div class="sidebar">
-            <div class="profile-section">
-                {% if user.profile.avatar %}
-                <img src="{{ user.profile.avatar.url }}" alt="Profile" class="profile-pic">
-                {% endif %}
-                <span class="username">{{ user.username }}</span>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search or start new chat">
-            </div>
-            <div class="chat-list">
-                {%for m in memebers %}
-                <div class="chat-item">
-                    {% if m.avatar %}
-                    <img src="{{ m.avatar.url }}" alt="Contact" class="contact-pic">
-                    {% endif %}
-                    <div class="chat-info">
-                        <span class="contact-name">{{ m.user.username }} </span>
-                        <!-- <span class="last-message">Last message...</span> -->
-                    </div>
-                </div>
-                {% endfor %}
-                <!--Add more chat items here  -->
-            </div>
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles.css' %}">
+<div class="app-container">
+    <div class="sidebar">
+        <div class="profile-section">
+            {% if user.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}" alt="Profile" class="profile-pic">
+            {% endif %}
+            <span class="username">{{ user.username }}</span>
         </div>
-        <div class="chat-window">
-            <div class="chat-header">
-                {% if user.profile.avatar %}
-                <img src="{{ user.profile.avatar.url }}" alt="Contact" class="contact-pic">
+        <div class="search-bar">
+            <input type="text" placeholder="Search or start new chat">
+        </div>
+        <div class="chat-list">
+            {%for m in memebers %}
+            <div class="chat-item">
+                {% if m.avatar %}
+                <img src="{{ m.avatar.url }}" alt="Contact" class="contact-pic">
                 {% endif %}
-                <span class="contact-name">{{ user.username }} </span>
+                <div class="chat-info">
+                    <span class="contact-name">{{ m.user.username }} </span>
+                    <!-- <span class="last-message">Last message...</span> -->
+                </div>
             </div>
-            <div class="chat-messages">
-                {% for chat in chats %}
-                {% if chat.author == user.profile %}
-                <div class="message received">
-                    <p>{{ chat.content }}</p>
-                </div>
-                {% else %}
-                <div class="message sent">
-                    <p>{{ chat.content }}</p>
-                </div>
-                {% endif %}
-                <!-- Add more messages here -->
-                {% endfor %}
-            </div>
-            <form action="{% url 'chat' room.room_name %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input name="file" type="file" id="filebtn" hidden>
-                <span class="input-group-text attach_btn">
-                    <label for="filebtn">
-                        <i class="fas fa-paperclip"></i>
-                    </label>
-                </span>
-                <div class="message-input">
-                    <input name="content" type="text" placeholder="Type a message" required>
-                    <button type="submit">Send</button>
-                </div>
-            </form>
+            {% endfor %}
+            <!--Add more chat items here  -->
         </div>
     </div>
-    <!-- <script src="{% static 'script.js' %}"></script> -->
-</body>
-
-</html>
+    <div class="chat-window">
+        <div class="chat-header">
+            {% if user.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}" alt="Contact" class="contact-pic">
+            {% endif %}
+            <span class="contact-name">{{ user.username }} </span>
+        </div>
+        <div class="chat-messages">
+            {% for chat in chats %}
+            {% if chat.author == user.profile %}
+            <div class="message sent" style="margin-right: -1%; margin-left: 50%;">
+                <p>{{ chat.content }}</p>
+            </div>
+            {% else %}
+            <div class="message received" style="margin-left: -1%; margin-right: 50%;">
+                <p>{{ chat.content }}</p>
+            </div>
+            {% endif %}
+            <!-- Add more messages here -->
+            {% endfor %}
+        </div>
+        <form action="{% url 'chat' room.room_name %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="file" type="file" id="filebtn" hidden>
+            <span class="input-group-text attach_btn">
+                <label for="filebtn">
+                    <i class="fas fa-paperclip"></i>
+                </label>
+            </span>
+            <div class="message-input">
+                <input name="content" type="text" placeholder="Type a message" required>
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
