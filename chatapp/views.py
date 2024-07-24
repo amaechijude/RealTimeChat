@@ -67,10 +67,16 @@ def chat(request, pk):
     room = Room.objects.get(room_name=pk)
     members = room.members.all()
     chats = RoomChat.objects.filter(room=room)
+    context = {
+        "room": room,
+        "chats": chats,
+        "members": members,
+        "user": request.user,
+        }
     
     if request.user.profile in members:
-        # if request.htmx:
-        if request.method == 'POST':
+        if request.htmx:
+        # if request.method == 'POST':
             content = request.POST['content']
             author = request.user.profile
             file = request.FILES.get('file') or None
@@ -78,15 +84,9 @@ def chat(request, pk):
             new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file, image=image)
             new_chat.save()
 
-            # return render(request, 'partial.html', context)
-            return redirect('chat', pk)
+            return render(request, 'partial.html', context)
+            # return redirect('chat', pk)
         
-        context = {
-        "room": room,
-        "chats": chats,
-        "members": members,
-        "user": request.user,
-        }
         
         return render(request, 'chat.html', context)
     else:

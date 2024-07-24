@@ -38,21 +38,18 @@
             {% endif %}
             <span class="contact-name">{{ user.username }} </span>
         </div>
-        <div class="chat-messages">
-            {% for chat in chats %}
-            {% if chat.author == user.profile %}
-            <div class="message sent" style="margin-right: -1%; margin-left: 50%;">
-                <p>{{ chat.content }}</p>
-            </div>
-            {% else %}
-            <div class="message received" style="margin-left: -1%; margin-right: 50%;">
-                <p>{{ chat.content }}</p>
-            </div>
-            {% endif %}
-            <!-- Add more messages here -->
-            {% endfor %}
-        </div>
-        <form action="{% url 'chat' room.room_name %}" method="post" enctype="multipart/form-data">
+
+        <!-- pulls the partial chat html -->
+
+        {% include 'partial.html' %}
+        
+        <!-- end pulls -->
+
+        <form enctype="multipart/form-data"
+            hx-post="{% url 'chat' room.room_name %}"
+            hx-target="#test"
+            hx-swap="outerHTML"
+            >
             {% csrf_token %}
             <input name="file" type="file" id="filebtn" hidden>
             <span class="input-group-text attach_btn">
