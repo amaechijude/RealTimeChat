@@ -33,19 +33,20 @@
     </div>
     <div class="chat-window">
         <div class="chat-header">
-            {% if user.profile.avatar %}
-            <img src="{{ user.profile.avatar.url }}" alt="Contact" class="contact-pic">
+            {% if room.avatar %}
+            <img src="{{ room.avatar.url }}" alt="Contact" class="contact-pic">
             {% endif %}
-            <span class="contact-name">{{ user.username }} </span>
+            <span class="contact-name">{{ room.room_name }} Chat Room</span>
         </div>
 
         <!-- pulls the partial chat html -->
 
         {% include 'partial.html' %}
-        
+
         <!-- end pulls -->
 
         <form enctype="multipart/form-data"
+            id="myForm"
             hx-post="{% url 'chat' room.room_name %}"
             hx-target="#test"
             hx-swap="outerHTML"
