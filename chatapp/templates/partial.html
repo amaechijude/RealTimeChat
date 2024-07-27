@@ -12,3 +12,15 @@
     {% endfor %}
 
 </div>
+<script>
+    function chatScroll() {
+        const chatbox = document.getElementById('test');
+        chatbox.scrollTop = chatbox.scrollHeight; 
+    }
+    chatScroll()
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var test = document.getElementById("test");
+        test.scrollTop = test.scrollHeight;
+    });
+</script>
