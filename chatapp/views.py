@@ -73,7 +73,7 @@ def chat(request, pk):
         "members": members,
         "user": request.user,
         }
-    
+    # print(members)
     if request.user.profile in members:
         if request.htmx:
         # if request.method == 'POST':

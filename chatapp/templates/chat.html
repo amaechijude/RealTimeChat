@@ -14,11 +14,14 @@
             {% endif %}
             <span class="username">{{ user.username }}</span>
         </div>
-        <div class="search-bar">
+        <!-- <div class="search-bar">
             <input type="text" placeholder="Search or start new chat">
-        </div>
+        </div> -->
         <div class="chat-list">
-            {%for m in memebers %}
+            <p><strong>Room Members</strong></p>
+            <hr>
+            {%for m in members %}
+            {% if m != request.user.profile %}
             <div class="chat-item">
                 {% if m.avatar %}
                 <img src="{{ m.avatar.url }}" alt="Contact" class="contact-pic">
@@ -28,6 +31,7 @@
                     <!-- <span class="last-message">Last message...</span> -->
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
             <!--Add more chat items here  -->
         </div>
@@ -67,5 +71,14 @@
         </form>
     </div>
 </div>
+
+<script>
+    const room_name = '{{ room.room_name }}';
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + room_name
+    );
+
+</script>
+<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
 {% endblock %}
 
