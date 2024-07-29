@@ -22,7 +22,14 @@ class ChatRoomConsumer(WebsocketConsumer):
         content = text_data_json['content']
         author = self.user.profile
         room = self.chatroom
-        new_chat = RoomChat.objects.create(room=room,
-                                           author=author,
-                                           content=content)
+        new_chat = RoomChat.objects.create(room=room,author=author,content=content)
 
+        context = {
+        "room": room,
+        "chats": new_chat,
+        "members": room.members.all(),
+        "user": author,
+        }
+
+        html = render_to_string('partial.html', context)
+        self.send(text_data=html)
