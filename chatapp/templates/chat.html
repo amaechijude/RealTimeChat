@@ -50,12 +50,19 @@
 
         <!-- end pulls -->
 
-        <form id="demo_form" enctype="multipart/form-data"
+        <!-- <form id="demo_form" enctype="multipart/form-data"
             id="myForm"
             hx-post="{% url 'chat' room.room_name %}"
             hx-target="#test"
             hx-swap="outerHTML"
 	    _="on htmx:afterRequest reset() me"
+            > -->
+        <form id="demo_form" enctype="multipart/form-data"
+            id="myForm"
+            hx-ext="{% url 'chat' room.room_name %}"
+            hx-target="#test"
+            hx-swap="outerHTML"
+	        _="on htmx:afterRequest reset() me"
             >
             {% csrf_token %}
             <input name="file" type="file" id="filebtn" hidden>
@@ -65,7 +72,7 @@
                 </label>
             </span>
             <div class="message-input">
-                <input name="content" type="text" placeholder="Type a message" id="content" required>
+                <input id="content" name="content" type="text" placeholder="Type a message" id="content" required>
                 <button type="submit">Send</button>
             </div>
         </form>
@@ -73,10 +80,26 @@
 </div>
 
 <script>
+    // Establish websocket connection
     const room_name = '{{ room.room_name }}';
-    const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/' + room_name
-    );
+    const chatSocketURL = 'ws://' + window.location.host + '/ws/chat/' + room_name;
+    const chatSocket = new WebSocket(chatSocketURL);
+
+    // send message to the websocket
+    const chatForm = document.getElementById("demo_form");
+    chatForm.addEventListener("submit", function(event) {
+        //prevent default submit
+        event.preventDefault();
+
+        let content = document.getElementById("content").value;
+
+        chatSocket.send(
+            JSON.stringify({
+                "content": content,
+            })
+        )
+    });
+
 
 </script>
 <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>

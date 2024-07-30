@@ -1,8 +1,10 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from django.shortcuts import get_object_or_404
 from .models import Room, RoomChat
 import json
 from django.template.loader import render_to_string
+from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
 
 class ChatRoomConsumer(WebsocketConsumer):
     #connect method
@@ -12,7 +14,12 @@ class ChatRoomConsumer(WebsocketConsumer):
         #room name from the url
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         #chat room instance
-        self.chatroom = get_object_or_404(Room, group_name=self.room_name)
+        self.chatroom = get_object_or_404(Room, room_name=self.room_name)
+
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_name, self.channel_name
+        )
+        
         self.accept()
 
 
@@ -23,10 +30,13 @@ class ChatRoomConsumer(WebsocketConsumer):
         author = self.user.profile
         room = self.chatroom
         new_chat = RoomChat.objects.create(room=room,author=author,content=content)
+        new_chat.save()
+
+        chats = RoomChat.objects.filter(room=room)
 
         context = {
         "room": room,
-        "chats": new_chat,
+        "chats": chats,
         "members": room.members.all(),
         "user": author,
         }
