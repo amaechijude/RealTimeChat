@@ -57,13 +57,7 @@
             hx-swap="outerHTML"
 	    _="on htmx:afterRequest reset() me"
             > -->
-        <form id="demo_form" enctype="multipart/form-data"
-            id="myForm"
-            hx-ext="{% url 'chat' room.room_name %}"
-            hx-target="#test"
-            hx-swap="outerHTML"
-	        _="on htmx:afterRequest reset() me"
-            >
+        <form id="demo_form" enctype="multipart/form-data">
             {% csrf_token %}
             <input name="file" type="file" id="filebtn" hidden>
             <span class="input-group-text attach_btn">
@@ -84,6 +78,7 @@
     const room_name = '{{ room.room_name }}';
     const socketUrl = `ws://${window.location.host}/ws/chat/${room_name}`
     const chatSocket = new WebSocket(socketUrl);
+    console.log("Socket connection established");
 
     // send message to the websocket
     const chatForm = document.getElementById("demo_form");
@@ -97,11 +92,32 @@
             JSON.stringify({
                 "content": content,
             })
-        )
+        );
+        console.log("Message sent.....resetting form ....");
+        this.reset();
+
     });
+
+    // receive and render responses
+    chatSocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        const items = data.items;
+        conole.log(data);
+
+        // update the chat container
+        const chatdiv = document.getElementById("test");
+        chatdiv.innerHTML = '';
+
+        items.forEach(item => {
+          const div = document.createElement('div');
+          div.textContent = item.content; // Adjust based on your data structure
+          chatdiv.appendChild(div);
+      });
+
+    };
 
 
 </script>
-<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
+<!-- <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script> -->
 {% endblock %}
 

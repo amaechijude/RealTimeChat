@@ -75,16 +75,16 @@ def chat(request, pk):
         }
     # print(members)
     if request.user.profile in members:
-        if request.htmx:
-        # if request.method == 'POST':
-            content = request.POST['content']
-            author = request.user.profile
-            file = request.FILES.get('file') or None
-            image = request.FILES.get('image') or None
-            new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file, image=image)
-            new_chat.save()
+        # if request.htmx:
+        # # if request.method == 'POST':
+        #     content = request.POST['content']
+        #     author = request.user.profile
+        #     file = request.FILES.get('file') or None
+        #     image = request.FILES.get('image') or None
+        #     new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file, image=image)
+        #     new_chat.save()
 
-            return render(request, 'partial.html', context)
+        #     return render(request, 'partial.html', context)
             # return redirect('chat', pk)
         
         

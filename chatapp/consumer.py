@@ -6,6 +6,10 @@ from django.template.loader import render_to_string
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 
+from logging import getLogger
+
+logger = getLogger(__name__)
+
 class ChatRoomConsumer(WebsocketConsumer):
     #connect method
     def connect(self):
@@ -25,6 +29,8 @@ class ChatRoomConsumer(WebsocketConsumer):
 
     #recieving messages. receives the messages as textdata
     def receive(self, text_data):
+        logger.info(f"Received data: {text_data}")
+
         text_data_json = json.loads(text_data)
         content = text_data_json['content']
         author = self.user.profile
@@ -32,14 +38,17 @@ class ChatRoomConsumer(WebsocketConsumer):
         new_chat = RoomChat.objects.create(room=room,author=author,content=content)
         new_chat.save()
 
-        chats = RoomChat.objects.filter(room=room)
+        chats = RoomChat.objects.filter(room=room).values()
+        context = {'chats': list(chats)}
 
-        context = {
-        "room": room,
-        "chats": chats,
-        "members": room.members.all(),
-        "user": author,
-        }
+        logger.info("Return ---  {context}")
 
-        html = render_to_string('partial.html', context)
+        # context = {
+        # "room": room,
+        # "chats": chats,
+        # "members": room.members.all(),
+        # "user": author,
+        # }
+
+        html = render_to_string('chat.html', context)
         self.send(text_data=html)
