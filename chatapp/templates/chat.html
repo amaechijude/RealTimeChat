@@ -82,8 +82,8 @@
 <script>
     // Establish websocket connection
     const room_name = '{{ room.room_name }}';
-    const chatSocketURL = 'ws://' + window.location.host + '/ws/chat/' + room_name;
-    const chatSocket = new WebSocket(chatSocketURL);
+    const socketUrl = `ws://${window.location.host}/ws/chat/${room_name}`
+    const chatSocket = new WebSocket(socketUrl);
 
     // send message to the websocket
     const chatForm = document.getElementById("demo_form");
