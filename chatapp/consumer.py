@@ -23,7 +23,6 @@ class ChatRoomConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(
             self.room_name, self.channel_name
         )
-        
         self.accept()
 
 
@@ -33,11 +32,13 @@ class ChatRoomConsumer(WebsocketConsumer):
         content = text_data_json['content']
         author = self.user.profile
         room = self.chatroom
+
         new_chat = RoomChat.objects.create(room=room,author=author,content=content)
 
         new_chat_json = {
             "content": new_chat.content,
-            # "author": new_chat.author,   
+            "author": new_chat.author.user.username,   
         }
 
         self.send(text_data=json.dumps(new_chat_json))
+        

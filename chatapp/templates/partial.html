@@ -1,11 +1,11 @@
 <div id="test" class="chat-messages">
     {% for chat in chats %}
     {% if chat.author == user.profile %}
-    <div class="message sent" style="margin-right: -1%; margin-left: 50%;">
+    <div class="message sent">
         <p>{{ chat.content }}</p>
     </div>
     {% else %}
-    <div class="message received" style="margin-left: -1%; margin-right: 50%;">
+    <div class="message received">
         <p>{{ chat.content }}</p>
     </div>
     {% endif %}

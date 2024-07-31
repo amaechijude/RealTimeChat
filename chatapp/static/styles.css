@@ -122,11 +122,15 @@ body {
 .message.received {
     background-color: #fff;
     align-self: flex-start;
+    margin-left: -1%;
+    margin-right: 50%;
 }
 
 .message.sent {
     background-color: #dcf8c6;
     align-self: flex-end;
+    margin-right: -1%;
+    margin-left: 50%;
 }
 
 .message-input {

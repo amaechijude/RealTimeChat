@@ -100,25 +100,44 @@
     // receive and render responses
     chatSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        const items = data.items;
-        console.log(data);
-        console.log(items);
+        
+        console.log(data['content']);
+        console.log(data['author']);
 
         //update the chat container
         const chatdiv = document.getElementById("test");
 
+        const content = data['content'];
+        const author = data["author"];
+        const username = "{{ request.user.username }}"; // django username
+
+        // create ne div for the chat response
         const new_div = document.createElement("div");
+        if (author == username) {
+            new_div.className ="message sent";
+        } else {
+            new_div.className = "message received";
+            }
         console.log("div created");
 
-        new_div.textContent = items.content;
-        chatdiv.appendChild(new_div)
+        const new_p = document.createElement("p");//new paragraph
+        new_p.textContent = content;// set the chat content
+        new_div.appendChild(new_p); // add the paragraph to the div
+        console.log("set text content");
+        chatdiv.appendChild(new_div);
+        console.log("append div");
 
-    //     items.forEach(item => {
-    //       const div = document.createElement('div');
-    //       div.textContent = item.content; // Adjust based on your data structure
-    //       chatdiv.appendChild(div);
-    //   });
+        // scroll
+        function chatScroll() {
+        const chatbox = document.getElementById('test');
+        chatbox.scrollTop = chatbox.scrollHeight; 
+        }
+        chatScroll()
 
+        document.addEventListener("DOMContentLoaded", function() {
+        var test = document.getElementById("test");
+        test.scrollTop = test.scrollHeight;
+        });
     };
 
     });
