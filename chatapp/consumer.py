@@ -75,15 +75,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #     "author": username,   
         #     }
         # )
-        await self.save_chat_to_db()
         chat = {
             "content": self.content,
             "author": self.username,   
             }
-        
+
+        event = {"type": "send_message", "message": text_data_json}
+        await self.channel_layer.group_send(
+                self.room_name,
+                chat
+                )
         await self.save_chat_to_db()
 
-        await self.send(text_data=json.dumps(chat))
+        #await self.send(text_data=json.dumps(chat))
     
 
     # save chat to database
@@ -94,6 +98,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room = self.chatroom
         new_chat = RoomChat.objects.create(room=room,author=author,content=chat)
         new_chat.save()
+        #return new_chat
 
     @database_sync_to_async
     def get_room(self, room_name):
