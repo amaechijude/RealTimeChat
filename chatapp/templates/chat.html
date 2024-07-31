@@ -67,6 +67,7 @@
             </span>
             <div class="message-input">
                 <input id="content" name="content" type="text" placeholder="Type a message" id="content" required>
+                <input type="text" id="author" name="author" value="{{ request.user.username }}" hidden>
                 <button type="submit">Send</button>
             </div>
         </form>
@@ -87,10 +88,12 @@
         event.preventDefault();
 
         let content = document.getElementById("content").value;
+        let author = document.getElementById("author").value;
 
         chatSocket.send(
             JSON.stringify({
                 "content": content,
+                "author": author,
             })
         );
         console.log("Message sent.....resetting form ....");
