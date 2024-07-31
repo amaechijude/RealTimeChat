@@ -29,26 +29,15 @@ class ChatRoomConsumer(WebsocketConsumer):
 
     #recieving messages. receives the messages as textdata
     def receive(self, text_data):
-        logger.info(f"Received data: {text_data}")
-
         text_data_json = json.loads(text_data)
         content = text_data_json['content']
         author = self.user.profile
         room = self.chatroom
         new_chat = RoomChat.objects.create(room=room,author=author,content=content)
-        new_chat.save()
 
-        chats = RoomChat.objects.filter(room=room).values()
-        context = {'chats': list(chats)}
+        new_chat_json = {
+            "content": new_chat.content,
+            # "author": new_chat.author,   
+        }
 
-        logger.info("Return ---  {context}")
-
-        # context = {
-        # "room": room,
-        # "chats": chats,
-        # "members": room.members.all(),
-        # "user": author,
-        # }
-
-        html = render_to_string('chat.html', context)
-        self.send(text_data=html)
+        self.send(text_data=json.dumps(new_chat_json))
