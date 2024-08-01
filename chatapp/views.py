@@ -42,22 +42,12 @@ def signout(request):
 
 @login_required(login_url='signin')
 def home(request):
-    if request.method == 'POST':
-        room_name = str(request.POST['room']).lower()
-        user = request.user
-        room = Room.objects.create(room_name=room_name, user=user)
-
-        messages.info(request, 'room created')
-        return redirect('home')
-
-            
-
     form = RoomForm()
     room_filter = RoomFilter(request.GET, queryset=Room.objects.all())
     context = {
         "form": form,
         'filter': room_filter,
-    }
+        }
 
     return render(request, 'home.html', context)
 
@@ -73,30 +63,10 @@ def chat(request, pk):
         "members": members,
         "user": request.user,
         }
-    # print(members)
     if request.user.profile in members:
-        # if request.htmx:
-        # # if request.method == 'POST':
-        #     content = request.POST['content']
-        #     author = request.user.profile
-        #     file = request.FILES.get('file') or None
-        #     image = request.FILES.get('image') or None
-        #     new_chat = RoomChat.objects.create(author=author, content=content, room=room, file=file, image=image)
-        #     new_chat.save()
-
-        #     return render(request, 'partial.html', context)
-            # return redirect('chat', pk)
-        
-        
         return render(request, 'chat.html', context)
     else:
-        #meesage to join room
         return redirect('home')
-
-
-def what(request):
-    return render(request, 'form.html')
-
 
 
 @login_required(login_url='signin')
