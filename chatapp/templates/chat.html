@@ -83,7 +83,7 @@
 
     // send message to the websocket
     const chatForm = document.getElementById("demo_form");
-    chatForm.addEventListener("submit", function(event) {
+    chatForm.addEventListener("submit", function (event) {
         //prevent default submit
         event.preventDefault();
 
@@ -98,12 +98,12 @@
         );
         console.log("Message sent.....resetting form ....");
         this.reset();
-
+    });
 
     // receive and render responses
     chatSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        
+
         console.log(data['content']);
         console.log(data['author']);
 
@@ -117,10 +117,10 @@
         // create ne div for the chat response
         const new_div = document.createElement("div");
         if (author == username) {
-            new_div.className ="message sent";
+            new_div.className = "message sent";
         } else {
             new_div.className = "message received";
-            }
+        }
         console.log("div created");
 
         const new_p = document.createElement("p");//new paragraph
@@ -132,21 +132,19 @@
 
         // scroll
         function chatScroll() {
-        const chatbox = document.getElementById('test');
-        chatbox.scrollTop = chatbox.scrollHeight; 
+            const chatbox = document.getElementById('test');
+            chatbox.scrollTop = chatbox.scrollHeight;
         }
         chatScroll()
 
-        document.addEventListener("DOMContentLoaded", function() {
-        var test = document.getElementById("test");
-        test.scrollTop = test.scrollHeight;
+        document.addEventListener("DOMContentLoaded", function () {
+            var test = document.getElementById("test");
+            test.scrollTop = test.scrollHeight;
         });
     };
 
-    });
 
 
 </script>
 <!-- <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script> -->
 {% endblock %}
-

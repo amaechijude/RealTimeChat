@@ -33,7 +33,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         new_chat_json = {
             "content": self.content,
-            "author": self.username,   
+            "author": self.username,
+            "online_count": 1,#to be updatedf
+
         }
         #save to dastatbase
         await self.save_chat_to_db()
@@ -54,6 +56,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         #Send message to websocket
         await self.send(text_data=json.dumps(message))
+    
 
     # save chat to database
     @database_sync_to_async
