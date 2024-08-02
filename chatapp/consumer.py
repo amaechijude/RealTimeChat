@@ -11,17 +11,42 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.chatroom = await self.get_room(self.room_name)
-    
+
         await self.channel_layer.group_add(
             self.room_name, self.channel_name
         )
 
         await self.accept()
+        #broadcast per join
+        join_info = {
+                "count": 1,
+                "note": f"{self.user} joined the room"
+                }
+        channel_layer = get_channel_layer()
+        await channel_layer.group_send(
+            self.room_name,
+            {
+                "type": "chat_message",
+                "message": join_info,
+            }
+        )
 
     # disconnect
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.room_name, self.channel_name
+        )
+        leave_info = {
+                "count": 1,
+                "note": f"{self.user} left the room"
+                }
+        channel_layer = get_channel_layer()
+        await channel_layer.group_send(
+            self.room_name,
+            {
+                "type": "chat_message",
+                "message": leave_info,
+            }
         )
 
 
@@ -34,7 +59,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         new_chat_json = {
             "content": self.content,
             "author": self.username,
-            "online_count": 1,#to be updatedf
 
         }
         #save to dastatbase

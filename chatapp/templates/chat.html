@@ -103,7 +103,8 @@
     // receive and render responses
     chatSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-
+	
+	if (data.hasOwnProperty("content")) {
         console.log(data['content']);
         console.log(data['author']);
 
@@ -141,7 +142,13 @@
             var test = document.getElementById("test");
             test.scrollTop = test.scrollHeight;
         });
+	} else if (data.hasOwnProperty("note")) {
+		const note = data['note'];
+		const count = parseInt(data['count']);
+		//alert(note);
+	}
     };
+    //chatSocket.onclose = 
 
 
 
