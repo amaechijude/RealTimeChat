@@ -37,7 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_name, self.channel_name
         )
         leave_info = {
-                "count": 1,
+                "count": 0,
                 "note": f"{self.user} left the room"
                 }
         channel_layer = get_channel_layer()

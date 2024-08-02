@@ -41,7 +41,8 @@
             {% if room.avatar %}
             <img src="{{ room.avatar.url }}" alt="Contact" class="contact-pic">
             {% endif %}
-            <span class="contact-name">{{ room.room_name }} Chat Room</span>
+	    <span class="contact-name">{{ room.room_name }} Chat Room</span>
+	    <span id="online">0</span> <button id="cap"> Carpital </button>
         </div>
 
         <!-- pulls the partial chat html -->
@@ -75,11 +76,24 @@
 </div>
 
 <script>
+	let counter = 0;
+	const incrementButton = document.getElementById('cap');
+    	const counterValue = document.getElementById('online');
+
+	incrementButton.addEventListener('click', () => {
+      // Update the integer variable
+      counter += 1;
+
+      // Update the displayed counter value
+      counterValue.textContent = counter;
+	});
+
     // Establish websocket connection
     const room_name = '{{ room.room_name }}';
     const socketUrl = `ws://${window.location.host}/ws/chat/${room_name}`
     const chatSocket = new WebSocket(socketUrl);
     console.log("Socket connection established");
+
 
     // send message to the websocket
     const chatForm = document.getElementById("demo_form");
@@ -145,10 +159,20 @@
 	} else if (data.hasOwnProperty("note")) {
 		const note = data['note'];
 		const count = parseInt(data['count']);
+		if (count === 1) {
+			counter += count;
+			counterValue.textContent = counter;
+		} else if (count === 0) {
+			counter -= 1;
+      			// Update the displayed counter value
+      			counterValue.textContent = counter
+		}
 		//alert(note);
 	}
     };
-    //chatSocket.onclose = 
+	chatSocket.onclose = function(event) {
+	};
+
 
 
 
