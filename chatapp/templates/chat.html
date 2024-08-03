@@ -6,6 +6,8 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles.css' %}">
 <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+
+
 <div class="app-container">
     <div class="sidebar">
         <div class="profile-section">
@@ -37,6 +39,9 @@
         </div>
     </div>
     <div class="chat-window">
+        <div id="noteDiv" class="alert alert-info">
+            
+        </div>
         <div class="chat-header">
             {% if room.avatar %}
             <img src="{{ room.avatar.url }}" alt="Contact" class="contact-pic">
@@ -77,22 +82,16 @@
 
 <script>
 	let counter = 0;
-	const incrementButton = document.getElementById('cap');
-    	const counterValue = document.getElementById('online');
-
-	incrementButton.addEventListener('click', () => {
-      // Update the integer variable
-      counter += 1;
-
-      // Update the displayed counter value
-      counterValue.textContent = counter;
-	});
 
     // Establish websocket connection
     const room_name = '{{ room.room_name }}';
     const socketUrl = `ws://${window.location.host}/ws/chat/${room_name}`
     const chatSocket = new WebSocket(socketUrl);
     console.log("Socket connection established");
+
+    const counterValue = document.getElementById('online');
+    counter += 1;
+    counterValue.textContent = counter;
 
 
     // send message to the websocket
@@ -156,6 +155,7 @@
             var test = document.getElementById("test");
             test.scrollTop = test.scrollHeight;
         });
+
 	} else if (data.hasOwnProperty("note")) {
 		const note = data['note'];
 		const count = parseInt(data['count']);
@@ -167,7 +167,8 @@
       			// Update the displayed counter value
       			counterValue.textContent = counter
 		}
-		//alert(note);
+		const noteDiv = document.getElementById("noteDiv");
+        noteDiv.textContent = note;
 	}
     };
 	chatSocket.onclose = function(event) {

@@ -19,7 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
         #broadcast per join
         join_info = {
-                "count": 1,
+                # "count": ,
                 "note": f"{self.user} joined the room"
                 }
         channel_layer = get_channel_layer()
